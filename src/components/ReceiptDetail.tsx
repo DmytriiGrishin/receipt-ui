@@ -47,7 +47,7 @@ function EditableItem({ item, onSave, onDelete }: { item: Receipt; onSave: (r: R
       </div>
       <div className="detail-item-meta">
         <span className="detail-item-category">{item.category}</span>
-        <span className="detail-item-date">{format(new Date(item.receiptDate), 'MMM d, yyyy')}</span>
+        <span className="detail-item-date">{item.receiptDate ? format(new Date(item.receiptDate), 'MMM d, yyyy') : ''}</span>
       </div>
       <button className="detail-delete-btn" onClick={(e) => { e.stopPropagation(); onDelete(item.id) }}>
         &#x2715;

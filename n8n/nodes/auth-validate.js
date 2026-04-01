@@ -3,30 +3,12 @@
  *
  * Validates Telegram initData HMAC (primary auth only).
  * Extracts userId from initData for downstream use.
- * Enforces rate limiting: max 60 requests per userId per minute.
  *
  * Input: Webhook request body with { action, payload, auth: { initData } }
  * Output: Passes through with userId added to item.json
  */
 
 const crypto = require('crypto')
-
-// In-memory rate limiter (resets on n8n restart; use Redis for production)
-const rateLimit = new Map()
-const RATE_LIMIT_WINDOW = 60 * 1000 // 1 minute
-const RATE_LIMIT_MAX = 60
-
-function checkRateLimit(userId) {
-  const now = Date.now()
-  const window = rateLimit.get(userId) || []
-  const recent = window.filter(t => now - t < RATE_LIMIT_WINDOW)
-  if (recent.length >= RATE_LIMIT_MAX) {
-    return false
-  }
-  recent.push(now)
-  rateLimit.set(userId, recent)
-  return true
-}
 
 const items = []
 
@@ -57,7 +39,9 @@ for (const item of $input.all()) {
   }
 
   // Parse initData into key-value pairs
-  const params = new URLSearchParams(initData)
+  // Replace + with %2B to prevent URLSearchParams from decoding + as space
+  const initDataFixed = initData.replace(/\+/g, '%2B')
+  const params = new URLSearchParams(initDataFixed)
   const hash = params.get('hash')
   if (!hash) {
     return [{
@@ -88,7 +72,7 @@ for (const item of $input.all()) {
     .join('\n')
 
   // Compute HMAC
-  const secretKey = crypto.createHash('sha256').update(botToken).digest()
+  const secretKey = crypto.createHmac('sha256', 'WebAppData').update(botToken).digest()
   const computedHash = crypto
     .createHmac('sha256', secretKey)
     .update(dataCheckString)
@@ -125,16 +109,6 @@ for (const item of $input.all()) {
       json: {
         error: 'Access denied',
         statusCode: 403
-      }
-    }]
-  }
-
-  // 4. Rate limiting
-  if (!checkRateLimit(userId)) {
-    return [{
-      json: {
-        error: 'Too many requests. Try again later.',
-        statusCode: 429
       }
     }]
   }

@@ -99,13 +99,16 @@ n8n/
 
 - `WEBHOOK_URL='/mock'` enables mock mode; any real URL switches to production
 - All API calls are POST to a single n8n webhook with `{ action, payload, auth }`
+- **CORS avoidance**: requests use `Content-Type: text/plain` (via `fetch`, not axios) to skip preflight — body is still valid JSON
 - 6 actions: `list`, `detail`, `create`, `update`, `delete`, `stats`
 - Receipt grouping: items with same `receipt` ref form a group; `receipt: null` = standalone
 - Grouping happens server-side (CTE-based SQL); pagination applies to groups, not rows
 - Bottom nav hides on overlay pages (`/edit`, `/detail`)
 - GitHub Pages deployment with `base: '/receipt-ui/'`
-- Auth: Telegram initData HMAC only (no shared secret); rate-limited at 60 req/min
+- Auth: Telegram initData HMAC with `HMAC_SHA256(botToken, 'WebAppData')` secret key
+- **Critical**: `URLSearchParams` treats `+` as space — replace with `%2B` before parsing in n8n
 - Telegram WebApp SDK served locally from `public/telegram-web-app.js`
+- `axios` is an unused dependency in package.json — do not reintroduce it
 
 ## Key API Contracts
 

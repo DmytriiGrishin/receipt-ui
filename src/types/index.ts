@@ -5,7 +5,7 @@ export interface Receipt {
   price: number
   category: string
   receipt: string | null
-  receiptDate: string
+  receiptDate?: string
 }
 
 export interface ReceiptCreate {
