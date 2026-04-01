@@ -1,4 +1,3 @@
-import axios from 'axios'
 import type {
   Action,
   ReceiptCreate,
@@ -25,58 +24,61 @@ function buildPayload(action: Action, payload: Record<string, unknown>): Webhook
   }
 }
 
+async function post<T>(action: Action, payload: Record<string, unknown>): Promise<T> {
+  const res = await fetch(WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(buildPayload(action, payload)),
+  })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  return res.json()
+}
+
 export async function listReceipts(filters: ListFilters): Promise<{ items: ListEntry[]; total: number }> {
   if (WEBHOOK_URL === '/mock') {
     return mockApi.list(filters)
   }
-  const { data } = await axios.post(WEBHOOK_URL, buildPayload('list', filters as unknown as Record<string, unknown>))
-  return data
+  return post('list', filters as unknown as Record<string, unknown>)
 }
 
 export async function getReceiptDetail(id: number): Promise<ReceiptDetail> {
   if (WEBHOOK_URL === '/mock') {
     return mockApi.detail(id)
   }
-  const { data } = await axios.post(WEBHOOK_URL, buildPayload('detail', { id }))
-  return data
+  return post('detail', { id })
 }
 
 export async function createReceipt(data: ReceiptCreate): Promise<{ id: number }> {
   if (WEBHOOK_URL === '/mock') {
     return mockApi.create(data)
   }
-  const { data: result } = await axios.post(WEBHOOK_URL, buildPayload('create', data as unknown as Record<string, unknown>))
-  return result
+  return post('create', data as unknown as Record<string, unknown>)
 }
 
 export async function updateReceipt(data: ReceiptUpdate): Promise<{ success: boolean }> {
   if (WEBHOOK_URL === '/mock') {
     return mockApi.update(data)
   }
-  const { data: result } = await axios.post(WEBHOOK_URL, buildPayload('update', data as unknown as Record<string, unknown>))
-  return result
+  return post('update', data as unknown as Record<string, unknown>)
 }
 
 export async function deleteReceipt(id: number): Promise<{ success: boolean }> {
   if (WEBHOOK_URL === '/mock') {
     return mockApi.delete(id)
   }
-  const { data: result } = await axios.post(WEBHOOK_URL, buildPayload('delete', { id }))
-  return result
+  return post('delete', { id })
 }
 
 export async function deleteItem(id: number): Promise<{ success: boolean }> {
   if (WEBHOOK_URL === '/mock') {
     return mockApi.delete(id)
   }
-  const { data: result } = await axios.post(WEBHOOK_URL, buildPayload('delete', { id }))
-  return result
+  return post('delete', { id })
 }
 
 export async function getStats(filters: StatsFilters): Promise<StatsResponse> {
   if (WEBHOOK_URL === '/mock') {
     return mockApi.stats(filters)
   }
-  const { data } = await axios.post(WEBHOOK_URL, buildPayload('stats', filters as unknown as Record<string, unknown>))
-  return data
+  return post('stats', filters as unknown as Record<string, unknown>)
 }
