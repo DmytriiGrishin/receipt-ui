@@ -27,7 +27,7 @@ export function ReceiptForm() {
           setPrice(r.price.toString())
           setCategory(r.category)
           setReceipt(r.receipt || '')
-          setReceiptDate(r.receiptDate)
+          setReceiptDate(r.receiptDate || '')
         }
       })
     }

@@ -1,0 +1,60 @@
+# Cursor Rules for receipt-ui
+
+## Project Overview
+Receipt tracking Telegram Mini App with React 19, TypeScript, Vite, and n8n backend.
+
+## Commands
+- `npm run dev` — Start Vite dev server (mock API by default)
+- `npm run build` — Type-check + production build
+- `npm run preview` — Preview production build
+- No test/lint configured. TypeScript strict mode catches issues.
+
+## Code Style (STRICT)
+- **NO semicolons** — ever (JS, TS, JSX, CSS)
+- **Single quotes** for strings and JSX attributes
+- **2-space indentation**
+- **NO trailing commas** in objects/arrays
+- Line length < 120 chars; break long JSX onto multiple lines
+- Currency: Russian ruble (₽) after amount: `{value.toFixed(2)} ₽`
+
+## TypeScript
+- `strict: true`, `verbatimModuleSyntax`, `noUnusedLocals`, `noUnusedParameters`
+- Use `import type` for type-only imports
+- Prefer `interface` for objects, `type` for unions/literals
+- No `any` — use `unknown` (exception: Recharts props may need `as any`)
+- Dates are ISO strings (`YYYY-MM-DD`), not `Date` objects
+- `Receipt.receiptDate` is optional — guard with `item.receiptDate ? ... : ''`
+
+## Naming
+- Components: PascalCase (`ReceiptList`)
+- Hooks: camelCase with `use` prefix (`useReceipts`)
+- Functions/variables: camelCase
+- Constants: UPPER_SNAKE_CASE
+- CSS classes: kebab-case, BEM-like (`.list-entry`, `.list-entry-label`)
+- Files: PascalCase for components, camelCase for utils/hooks
+
+## Imports
+- Relative imports without extension: `import { x } from '../types'`
+- Group: React/hooks first, then local modules, then types
+- Type imports: `import type { X }` or inline `import { type X }`
+
+## Architecture
+- Single n8n webhook POST with `{ action, payload, auth }`
+- `Content-Type: text/plain` to avoid CORS preflight
+- 6 actions: `list`, `detail`, `create`, `update`, `delete`, `stats`
+- Mock mode: `WEBHOOK_URL='/mock'`
+- Auth: Telegram initData HMAC validation
+- GitHub Pages deployment with `base: '/receipt-ui/'`
+- `axios` is unused — do not reintroduce
+
+## CSS
+- Single `src/styles.css` — no CSS modules or CSS-in-JS
+- Mobile-first, no media queries (Telegram Mini App is mobile-only)
+- Component-prefixed class names (`.receipt-list`, `.detail-item`)
+
+## n8n Node Scripts (n8n/nodes/*.js)
+- Same style: no semicolons, 2-space indent, single quotes
+- Use `$input.all()`, `$input.first()`, `$env.VAR`
+- Return `[{ json: { ... } }]` from Code nodes
+- All SQL uses parameterized queries (`$1`, `$2`)
+- Rate limiting: 60 req/min per userId

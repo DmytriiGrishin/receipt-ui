@@ -79,7 +79,7 @@ function generateTestData(): Receipt[] {
     addReceipt(TEST_ITEMS[idx], date, null)
   }
 
-  receipts.sort((a, b) => new Date(b.receiptDate).getTime() - new Date(a.receiptDate).getTime())
+  receipts.sort((a, b) => new Date(b.receiptDate!).getTime() - new Date(a.receiptDate!).getTime())
   return receipts
 }
 
@@ -99,11 +99,11 @@ function buildGroups(items: Receipt[]): { groups: Map<string | null, Receipt[]>;
 function groupsToEntries(groups: Map<string | null, Receipt[]>): ListEntry[] {
   const entries: ListEntry[] = []
   for (const [key, items] of groups) {
-    const sorted = [...items].sort((a, b) => new Date(b.receiptDate).getTime() - new Date(a.receiptDate).getTime())
+    const sorted = [...items].sort((a, b) => new Date(b.receiptDate!).getTime() - new Date(a.receiptDate!).getTime())
     entries.push({
       id: sorted[0].id,
       label: key || sorted[0].item,
-      date: sorted[0].receiptDate,
+      date: sorted[0].receiptDate || '',
       total: Math.round(items.reduce((s, r) => s + r.price, 0) * 100) / 100,
       itemCount: items.length,
       isGroup: key !== null,
@@ -123,10 +123,10 @@ function applyFilters(items: Receipt[], filters: ListFilters): Receipt[] {
     result = result.filter(r => r.category === filters.category)
   }
   if (filters.from) {
-    result = result.filter(r => r.receiptDate >= filters.from!)
+    result = result.filter(r => r.receiptDate != null && r.receiptDate >= filters.from!)
   }
   if (filters.to) {
-    result = result.filter(r => r.receiptDate <= filters.to!)
+    result = result.filter(r => r.receiptDate != null && r.receiptDate <= filters.to!)
   }
   if (filters.userId) {
     result = result.filter(r => r.userId === filters.userId)
@@ -156,7 +156,7 @@ export const mockApi = {
       return {
         id,
         label: item.receipt,
-        date: item.receiptDate,
+        date: item.receiptDate || '',
         items,
       }
     }
@@ -164,7 +164,7 @@ export const mockApi = {
     return {
       id,
       label: item.item,
-      date: item.receiptDate,
+      date: item.receiptDate || '',
       items: [item],
     }
   },
@@ -204,8 +204,8 @@ export const mockApi = {
   stats(filters: StatsFilters): { totalSpent: number; count: number; avgPrice: number; byCategory: CategoryStat[]; byMonth: MonthStat[]; topItems: TopItem[] } {
     let items = [...data]
     if (filters.userId) items = items.filter(r => r.userId === filters.userId)
-    if (filters.from) items = items.filter(r => r.receiptDate >= filters.from!)
-    if (filters.to) items = items.filter(r => r.receiptDate <= filters.to!)
+    if (filters.from) items = items.filter(r => r.receiptDate != null && r.receiptDate >= filters.from!)
+    if (filters.to) items = items.filter(r => r.receiptDate != null && r.receiptDate <= filters.to!)
 
     const totalSpent = items.reduce((s, r) => s + r.price, 0)
     const count = items.length
@@ -224,7 +224,7 @@ export const mockApi = {
 
     const monthMap = new Map<string, { total: number; count: number }>()
     for (const r of items) {
-      const month = r.receiptDate.substring(0, 7)
+      const month = r.receiptDate?.substring(0, 7) || ''
       const existing = monthMap.get(month) || { total: 0, count: 0 }
       existing.total += r.price
       existing.count++
