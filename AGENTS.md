@@ -25,9 +25,11 @@ src/
 ├── App.tsx                 # Router + bottom nav
 ├── main.tsx                # Entry point
 └── styles.css              # All styles (dark theme fallbacks)
+public/
+└── telegram-web-app.js     # Local copy of Telegram WebApp SDK
 n8n/
 ├── nodes/                  # n8n Code Node JS scripts
-│   ├── auth-validate.js    # HMAC + secret validation
+│   ├── auth-validate.js    # HMAC validation + rate limiting
 │   ├── action-router.js    # SQL query generation per action
 │   ├── stats-queries.js    # Additional stats sub-queries
 │   ├── response-formatter.js
@@ -90,6 +92,8 @@ n8n/
 - Return `[{ json: { ... } }]` from Code nodes
 - Log errors with `console.error()` for n8n execution log visibility
 - All SQL uses parameterized queries (`$1`, `$2`, etc.)
+- Rate limiting: 60 req/min per userId (in-memory, resets on n8n restart)
+- Env vars must be set — no fallback defaults for secrets
 
 ## Architecture
 
@@ -100,6 +104,8 @@ n8n/
 - Grouping happens server-side (CTE-based SQL); pagination applies to groups, not rows
 - Bottom nav hides on overlay pages (`/edit`, `/detail`)
 - GitHub Pages deployment with `base: '/receipt-ui/'`
+- Auth: Telegram initData HMAC only (no shared secret); rate-limited at 60 req/min
+- Telegram WebApp SDK served locally from `public/telegram-web-app.js`
 
 ## Key API Contracts
 
@@ -108,7 +114,7 @@ n8n/
 {
   "action": "list" | "detail" | "create" | "update" | "delete" | "stats",
   "payload": { ... },
-  "auth": { "initData": "<Telegram string>", "token": "<shared secret>" }
+  "auth": { "initData": "<Telegram string>", "token": "" }
 }
 ```
 
@@ -129,6 +135,6 @@ n8n/
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `VITE_WEBHOOK_URL` | n8n webhook URL | `/mock` |
-| `VITE_WEBHOOK_SECRET` | Shared secret token | `dev-secret` |
+| `TELEGRAM_BOT_TOKEN` | Bot token (n8n only, for HMAC validation) | — |
 
-Set these in `.env` for local dev or as GitHub repo secrets for deployment.
+Set `VITE_WEBHOOK_URL` in `.env` for local dev or as a GitHub repo secret for deployment.
