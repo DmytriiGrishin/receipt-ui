@@ -43,7 +43,7 @@ function EditableItem({ item, onSave, onDelete }: { item: Receipt; onSave: (r: R
     <div className="detail-item" onClick={() => setEditing(true)}>
       <div className="detail-item-main">
         <span className="detail-item-name">{item.item}</span>
-        <span className="detail-item-price">${item.price.toFixed(2)}</span>
+        <span className="detail-item-price">{item.price.toFixed(2)} ₽</span>
       </div>
       <div className="detail-item-meta">
         <span className="detail-item-category">{item.category}</span>
@@ -100,7 +100,7 @@ export function ReceiptDetail() {
         <span className="detail-date">{format(new Date(detail.date), 'MMMM d, yyyy')}</span>
         <div className="detail-total">
           <span>Total</span>
-          <span className="detail-total-value">${detail.items.reduce((s, i) => s + i.price, 0).toFixed(2)}</span>
+          <span className="detail-total-value">{detail.items.reduce((s, i) => s + i.price, 0).toFixed(2)} ₽</span>
         </div>
       </div>
 

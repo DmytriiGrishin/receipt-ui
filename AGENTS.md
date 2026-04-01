@@ -52,6 +52,8 @@ n8n/
 - Prefer `interface` over `type` for object shapes; use `type` for unions/literals
 - No `any` — use `unknown` or proper types. Exception: Recharts label/formatter props may need `as any` casts due to v3 strictness
 - All dates are ISO date strings (`YYYY-MM-DD`), not `Date` objects
+- `Receipt.receiptDate` is optional — guard with `item.receiptDate ? ... : ''` before formatting
+- Currency: Russian ruble (₽), placed after the amount: `{value.toFixed(2)} ₽`
 
 ### Naming
 - **Components**: PascalCase (`ReceiptList`, `StatsDashboard`)

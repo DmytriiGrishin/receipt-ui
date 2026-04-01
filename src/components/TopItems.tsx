@@ -4,7 +4,7 @@ import type { TopItem } from '../types'
 const COLORS = ['#ff9500', '#ff3b30', '#af52de', '#2ea6ff', '#34c759', '#5ac8fa', '#ffcc00', '#007aff', '#ff2d55', '#64d2ff']
 
 function fmt(value: unknown): string {
-  return `$${(value as number).toFixed(2)}`
+  return `${(value as number).toFixed(2)} ₽`
 }
 
 export function TopItems({ data }: { data: TopItem[] }) {
@@ -29,7 +29,7 @@ export function TopItems({ data }: { data: TopItem[] }) {
             <span className="rank">#{i + 1}</span>
             <span className="item-name">{item.item}</span>
             <span className="item-count">{item.count}x</span>
-            <span className="item-total">${item.total.toFixed(2)}</span>
+            <span className="item-total">{item.total.toFixed(2)} ₽</span>
           </div>
         ))}
       </div>

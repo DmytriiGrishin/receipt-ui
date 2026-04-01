@@ -2,7 +2,7 @@ import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianG
 import type { MonthStat } from '../types'
 
 function fmt(value: unknown): string {
-  return `$${(value as number).toFixed(2)}`
+  return `${(value as number).toFixed(2)} ₽`
 }
 
 export function PriceTrend({ data }: { data: MonthStat[] }) {
@@ -31,7 +31,7 @@ export function PriceTrend({ data }: { data: MonthStat[] }) {
         {data.map(m => (
           <div key={m.month} className="trend-item">
             <span>{m.month}</span>
-            <span>${m.total.toFixed(2)}</span>
+            <span>{m.total.toFixed(2)} ₽</span>
             <span className="trend-count">{m.count} receipts</span>
           </div>
         ))}

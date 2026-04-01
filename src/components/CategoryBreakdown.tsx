@@ -4,7 +4,7 @@ import type { CategoryStat } from '../types'
 const COLORS = ['#2ea6ff', '#34c759', '#ff9500', '#ff3b30', '#af52de', '#5ac8fa', '#ffcc00', '#007aff']
 
 function fmt(value: unknown): string {
-  return `$${(value as number).toFixed(2)}`
+  return `${(value as number).toFixed(2)} ₽`
 }
 
 export function CategoryBreakdown({ data, mode }: { data: CategoryStat[]; mode?: 'detailed' }) {
@@ -28,7 +28,7 @@ export function CategoryBreakdown({ data, mode }: { data: CategoryStat[]; mode?:
               <span className="color-dot" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
               <span className="cat-name">{c.category}</span>
               <span className="cat-count">{c.count} items</span>
-              <span className="cat-total">${c.total.toFixed(2)}</span>
+              <span className="cat-total">{c.total.toFixed(2)} ₽</span>
             </div>
           ))}
         </div>

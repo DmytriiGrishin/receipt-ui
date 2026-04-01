@@ -28,7 +28,7 @@ export function StatsDashboard() {
 
       <div className="stats-overview">
         <div className="stat-card">
-          <span className="stat-value">${stats.totalSpent.toFixed(2)}</span>
+          <span className="stat-value">{stats.totalSpent.toFixed(2)} ₽</span>
           <span className="stat-label">Total Spent</span>
         </div>
         <div className="stat-card">
@@ -36,7 +36,7 @@ export function StatsDashboard() {
           <span className="stat-label">Receipts</span>
         </div>
         <div className="stat-card">
-          <span className="stat-value">${stats.avgPrice.toFixed(2)}</span>
+          <span className="stat-value">{stats.avgPrice.toFixed(2)} ₽</span>
           <span className="stat-label">Avg Price</span>
         </div>
       </div>
