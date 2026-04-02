@@ -14,7 +14,7 @@ function ListEntryCard({ entry, onTap, onDelete }: { entry: ListEntry; onTap: (i
         </div>
         <span className="list-entry-date">{format(new Date(entry.date), 'MMM d, yyyy')}</span>
       </div>
-      <div className="list-entry-total">${entry.total.toFixed(2)}</div>
+      <div className="list-entry-total">{entry.total.toFixed(2)} ₽</div>
       <button className="list-delete-btn" onClick={(e) => { e.stopPropagation(); onDelete(entry.id) }}>
         &#x2715;
       </button>
