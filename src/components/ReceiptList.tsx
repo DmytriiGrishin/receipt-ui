@@ -22,7 +22,7 @@ function ListEntryCard({ entry, onTap, onDelete }: { entry: ListEntry; onTap: (i
 }
 
 export function ReceiptList() {
-  const { items, total, loading, filters, applyFilters, loadMore, remove, refresh, hasMore } = useReceipts()
+  const { items, loading, filters, applyFilters, loadMore, remove, refresh, hasMore } = useReceipts()
   const navigate = useNavigate()
   const [showFilters, setShowFilters] = useState(false)
   const [search, setSearch] = useState(filters.search || '')
@@ -60,7 +60,7 @@ export function ReceiptList() {
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Receipts ({total})</h1>
+        <h1>Receipts ({items.length})</h1>
         <button className="icon-btn" onClick={refresh} title="Refresh">&#x21bb;</button>
       </div>
 
