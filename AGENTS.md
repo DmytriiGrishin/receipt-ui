@@ -1,5 +1,7 @@
 # AGENTS.md — receipt-ui
 
+Receipt tracking Telegram Mini App. React 19 + TypeScript + Vite frontend, n8n webhook backend.
+
 ## Commands
 
 ```
@@ -59,7 +61,7 @@ n8n/
 - **Components**: PascalCase (`ReceiptList`, `StatsDashboard`)
 - **Hooks**: camelCase with `use` prefix (`useReceipts`)
 - **Functions/variables**: camelCase
-- **Constants**: UPPER_SNAKE_CASE for true constants; `CATEGORIES` is a module-level const
+- **Constants**: UPPER_SNAKE_CASE for true constants
 - **CSS classes**: kebab-case, BEM-like (`.list-entry`, `.list-entry-label`)
 - **Files**: PascalCase for components, camelCase for utilities/hooks
 
@@ -107,6 +109,7 @@ n8n/
 - Grouping happens server-side (CTE-based SQL); pagination applies to groups, not rows
 - Bottom nav hides on overlay pages (`/edit`, `/detail`)
 - GitHub Pages deployment with `base: '/receipt-ui/'`
+- `BrowserRouter` must use `basename="/receipt-ui"` to match GitHub Pages base path
 - Auth: Telegram initData HMAC with `HMAC_SHA256(botToken, 'WebAppData')` secret key
 - **Critical**: `URLSearchParams` treats `+` as space — replace with `%2B` before parsing in n8n
 - Telegram WebApp SDK served locally from `public/telegram-web-app.js`

@@ -51,7 +51,7 @@ function AppContent() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/receipt-ui">
       <AppContent />
     </BrowserRouter>
   )
