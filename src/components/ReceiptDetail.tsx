@@ -97,7 +97,7 @@ export function ReceiptDetail() {
 
       <div className="detail-header">
         <h1 className="detail-title">{detail.label}</h1>
-        <span className="detail-date">{format(new Date(detail.date), 'MMMM d, yyyy')}</span>
+        <span className="detail-date">{detail.date ? format(new Date(detail.date), 'MMMM d, yyyy') : ''}</span>
         <div className="detail-total">
           <span>Total</span>
           <span className="detail-total-value">{detail.items.reduce((s, i) => s + i.price, 0).toFixed(2)} ₽</span>
