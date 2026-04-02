@@ -592,10 +592,14 @@ body {
   color: var(--section-header);
 }
 
+.chart-container svg,
 .chart-container svg:focus,
-.chart-container svg path:focus,
-.chart-container svg circle:focus,
-.chart-container svg rect:focus {
+.chart-container svg:focus-visible,
+.chart-container svg:focus-within {
+  outline: none;
+}
+
+.chart-container svg * {
   outline: none;
 }
 
