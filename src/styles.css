@@ -592,6 +592,17 @@ body {
   color: var(--section-header);
 }
 
+.chart-container svg:focus,
+.chart-container svg path:focus,
+.chart-container svg circle:focus,
+.chart-container svg rect:focus {
+  outline: none;
+}
+
+.chart-container .recharts-tooltip-wrapper {
+  outline: none;
+}
+
 .category-details {
   margin-top: 12px;
 }
