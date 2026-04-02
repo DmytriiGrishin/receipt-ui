@@ -29,7 +29,6 @@ export interface ReceiptUpdate {
 export interface ListFilters {
   userId?: string
   search?: string
-  category?: string
   from?: string
   to?: string
   limit?: number

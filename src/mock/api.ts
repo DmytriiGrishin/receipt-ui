@@ -119,9 +119,6 @@ function applyFilters(items: Receipt[], filters: ListFilters): Receipt[] {
     const q = filters.search.toLowerCase()
     result = result.filter(r => r.item.toLowerCase().includes(q) || r.category.toLowerCase().includes(q) || (r.receipt?.toLowerCase().includes(q)))
   }
-  if (filters.category) {
-    result = result.filter(r => r.category === filters.category)
-  }
   if (filters.from) {
     result = result.filter(r => r.receiptDate != null && r.receiptDate >= filters.from!)
   }

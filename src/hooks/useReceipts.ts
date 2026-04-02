@@ -2,8 +2,6 @@ import { useState, useEffect, useCallback } from 'react'
 import { listReceipts, deleteReceipt } from '../api/webhook'
 import type { ListEntry, ListFilters } from '../types'
 
-const CATEGORIES = ['Groceries', 'Transport', 'Dining', 'Utilities', 'Entertainment', 'Health', 'Shopping', 'Education']
-
 export function useReceipts() {
   const [items, setItems] = useState<ListEntry[]>([])
   const [total, setTotal] = useState(0)
@@ -56,5 +54,5 @@ export function useReceipts() {
     load(filters, 0)
   }
 
-  return { items, total, loading, filters, applyFilters, loadMore, remove, refresh, categories: CATEGORIES, hasMore: offset + items.length < total }
+  return { items, total, loading, filters, applyFilters, loadMore, remove, refresh, hasMore: offset + items.length < total }
 }

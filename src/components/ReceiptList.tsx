@@ -23,18 +23,16 @@ function ListEntryCard({ entry, onTap, onDelete }: { entry: ListEntry; onTap: (i
 }
 
 export function ReceiptList() {
-  const { items, total, loading, filters, applyFilters, loadMore, remove, refresh, categories, hasMore } = useReceipts()
+  const { items, total, loading, filters, applyFilters, loadMore, remove, refresh, hasMore } = useReceipts()
   const navigate = useNavigate()
   const [showFilters, setShowFilters] = useState(false)
   const [search, setSearch] = useState(filters.search || '')
-  const [category, setCategory] = useState(filters.category || '')
   const [dateFrom, setDateFrom] = useState(filters.from || '')
   const [dateTo, setDateTo] = useState(filters.to || '')
 
   const handleApplyFilters = () => {
     applyFilters({
       search: search || undefined,
-      category: category || undefined,
       from: dateFrom || undefined,
       to: dateTo || undefined,
     })
@@ -43,7 +41,6 @@ export function ReceiptList() {
 
   const handleClearFilters = () => {
     setSearch('')
-    setCategory('')
     setDateFrom('')
     setDateTo('')
     applyFilters({})
@@ -59,7 +56,7 @@ export function ReceiptList() {
     }
   }
 
-  const hasActiveFilters = search || category || dateFrom || dateTo
+  const hasActiveFilters = search || dateFrom || dateTo
 
   return (
     <div className="page">
@@ -83,13 +80,6 @@ export function ReceiptList() {
 
       {showFilters && (
         <div className="filter-panel">
-          <div className="filter-row">
-            <label>Category</label>
-            <select value={category} onChange={e => setCategory(e.target.value)}>
-              <option value="">All</option>
-              {categories.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
-          </div>
           <div className="filter-row">
             <label>From</label>
             <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
