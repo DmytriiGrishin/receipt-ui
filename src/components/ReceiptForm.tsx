@@ -4,8 +4,6 @@ import WebApp from '@twa-dev/sdk'
 import { createReceipt, updateReceipt, getReceiptDetail } from '../api/webhook'
 import { getUserId } from '../utils/telegram'
 
-const CATEGORIES = ['Groceries', 'Transport', 'Dining', 'Utilities', 'Entertainment', 'Health', 'Shopping', 'Education']
-
 export function ReceiptForm() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -95,10 +93,7 @@ export function ReceiptForm() {
 
         <div className="form-group">
           <label>Category *</label>
-          <select value={category} onChange={e => setCategory(e.target.value)} required>
-            <option value="">Select category</option>
-            {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-          </select>
+          <input type="text" value={category} onChange={e => setCategory(e.target.value)} placeholder="e.g. Groceries" required />
         </div>
 
         <div className="form-group">

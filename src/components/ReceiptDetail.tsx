@@ -4,8 +4,6 @@ import { getReceiptDetail, updateReceipt, deleteReceipt } from '../api/webhook'
 import { format } from 'date-fns'
 import type { Receipt } from '../types'
 
-const CATEGORIES = ['Groceries', 'Transport', 'Dining', 'Utilities', 'Entertainment', 'Health', 'Shopping', 'Education']
-
 function EditableItem({ item, onSave, onDelete }: { item: Receipt; onSave: (r: Receipt) => void; onDelete: (id: number) => void }) {
   const [editing, setEditing] = useState(false)
   const [itemVal, setItemVal] = useState(item.item)
@@ -26,9 +24,7 @@ function EditableItem({ item, onSave, onDelete }: { item: Receipt; onSave: (r: R
           <input type="number" step="0.01" value={priceVal} onChange={e => setPriceVal(e.target.value)} className="edit-price" />
         </div>
         <div className="edit-row">
-          <select value={categoryVal} onChange={e => setCategoryVal(e.target.value)}>
-            {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-          </select>
+          <input type="text" value={categoryVal} onChange={e => setCategoryVal(e.target.value)} placeholder="Category" />
           <input type="date" value={dateVal} onChange={e => setDateVal(e.target.value)} className="edit-date" />
         </div>
         <div className="edit-actions">
