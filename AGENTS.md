@@ -5,10 +5,10 @@
 ```
 npm run dev        # Start Vite dev server (uses mock API by default)
 npm run build      # Type-check + production build (tsc -b && vite build)
-npm run preview    # Preview production build locally
+npm run preview    # Preview production build
 ```
 
-- **No test framework** is configured. If adding tests, use Vitest (`npm i -D vitest @testing-library/react @testing-library/jest-dom`) and place files as `src/**/*.test.tsx`. Run with `npx vitest` or `npx vitest run -t "test name"` for a single test.
+- **No test framework** is configured. If adding tests, use Vitest (`npm i -D vitest @testing-library/react @testing-library/jest-dom`) and place files as `src/**/*.test.tsx`. Run with `npx vitest` (watch mode) or `npx vitest run -t "test name"` for a single test.
 - **No linter/formatter** is configured. TypeScript strict mode catches most issues. If adding one, Prettier + ESLint are the natural fit.
 
 ## Project Structure
@@ -37,7 +37,7 @@ n8n/
 └── README.md               # n8n workflow setup guide
 ```
 
-## Code Style
+## Code Style (STRICT)
 
 ### Formatting
 - **No semicolons** — omit everywhere (JS, TS, JSX, CSS)
